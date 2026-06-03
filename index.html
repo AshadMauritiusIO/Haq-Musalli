@@ -395,6 +395,21 @@
             });
         });
 
+// PREVENT CONFLICT: Stop swipe container from stealing clicks on the Auth tabs
+const authToggles = [document.getElementById('loginToggle'), document.getElementById('signupToggle')];
+authToggles.forEach(toggle => {
+    if (toggle) {
+        const arrestSwipe = (e) => {
+            e.stopPropagation();
+        };
+        toggle.addEventListener('touchstart', arrestSwipe, { passive: true });
+        toggle.addEventListener('touchend', arrestSwipe, { passive: true });
+        toggle.addEventListener('mousedown', arrestSwipe);
+        toggle.addEventListener('mouseup', arrestSwipe);
+    }
+});
+
+        
         // Navigation Engine Frame Controller
         function slideToSection(index) {
             currentSectionIndex = index;
