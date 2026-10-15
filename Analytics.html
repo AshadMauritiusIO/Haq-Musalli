@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bayt Al-Hikmah | BI Analytics & Interactive Learning Framework</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        gold: {
+                            400: '#d4af37',
+                            500: '#c5a059',
+                            600: '#aa823d',
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['Playfair Display', 'Georgia', 'serif'],
+                        arabic: ['Amiri', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #030712; color: #f8fafc; }
+        .premium-card { background: linear-gradient(145deg, rgba(15, 23, 42, 0.9), rgba(3, 7, 18, 0.95)); border: 1px solid rgba(212, 175, 55, 0.15); box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5); }
+        .premium-card:hover { border-color: rgba(212, 175, 55, 0.4); }
+    </style>
+</head>
+<body class="min-h-screen antialiased selection:bg-gold-500 selection:text-slate-950">
+
+    <!-- TOP NAVIGATION -->
+    <header class="sticky top-0 z-50 backdrop-blur-md bg-slate-950/80 border-b border-white/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-lg bg-gold-500/10 border border-gold-400/30 flex items-center justify-center text-gold-400 font-serif font-bold text-lg">
+                    ب
+                </div>
+                <div>
+                    <span class="text-xs font-mono text-gold-400 tracking-widest uppercase block">Analytics & Intelligence</span>
+                    <h1 class="text-lg font-serif text-white font-semibold">Bayt Al-Hikmah Hub</h1>
+                </div>
+            </div>
+            <div class="flex items-center space-x-4 text-xs font-mono text-slate-400">
+                <span class="hidden sm:inline">Status: <span class="text-emerald-400 font-semibold">Live Feed</span></span>
+                <span class="px-3 py-1.5 rounded-full bg-gold-500/10 border border-gold-400/20 text-gold-400">BI Engine v2.4</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTAINER -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-10">
+
+        <!-- SECTION 1: PARAMETERS & BI FILTER BAR -->
+        <section class="premium-card rounded-2xl p-6 sm:p-8 space-y-6">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-white/10 pb-6">
+                <div>
+                    <span class="text-xs font-mono text-gold-400 uppercase tracking-widest">Interactive Control Panel</span>
+                    <h2 class="text-2xl font-serif text-white">Analytic Parameters & Filters</h2>
+                </div>
+                <div class="flex items-center space-x-3 text-xs">
+                    <button onclick="resetFilters()" class="px-4 py-2 rounded-lg bg-slate-900 border border-white/10 text-slate-300 hover:text-white transition">Reset Filters</button>
+                    <button onclick="applyFilters()" class="px-4 py-2 rounded-lg bg-gold-500 text-slate-950 font-semibold hover:bg-gold-400 transition">Apply Parameters</button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Filter 1: Fiscal Year -->
+                <div class="space-y-2">
+                    <label class="text-xs font-mono text-slate-400 uppercase">Fiscal Year Parameter</label>
+                    <select id="filter-year" class="w-full bg-slate-900 border border-white/10 rounded-xl px-4 py-3 text-sm text-slate-200 focus:outline-none focus:border-gold-400">
+                        <option value="2025">FY 2025 (Full Audit)</option>
+                        <option value="2026">FY 2026 (YTD)</option>
+                        <option value="all">All Historical Records</option>
+                    </select>
+                </div>
+
+                <!-- Filter 2: Account Ledger -->
+                <div class="space-y-2">
+                    <label class="text-xs font-mono text-slate-400 uppercase">Bank Ledger Selector</label>
+                    <select id="filter-account" class="w-full bg-slate-900 border border-white/10 rounded-xl px-4 py-3 text-sm text-slate-200 focus:outline-none focus:border-gold-400">
+                        <option value="all">All MCB Accounts Combined</option>
+                        <option value="15942">Acct ending 5942 (Main Reserves)</option>
+                        <option value="34661">Acct ending 4661 (Project Fund)</option>
+                        <option value="4835">Acct ending 4835 (Operating Float)</option>
+                    </select>
+                </div>
+
+                <!-- Filter 3: Expense Category -->
+                <div class="space-y-2">
+                    <label class="text-xs font-mono text-slate-400 uppercase">Operational Domain</label>
+                    <select id="filter-domain" class="w-full bg-slate-900 border border-white/10 rounded-xl px-4 py-3 text-sm text-slate-200 focus:outline-none focus:border-gold-400">
+                        <option value="all">All Domains (Financial & Assets)</option>
+                        <option value="financial">Financial Stewardship & Revenue</option>
+                        <option value="infrastructure">Infrastructure & Commercial Tenants</option>
+                        <option value="governance">Administrative & Vendor Compliance</option>
+                    </select>
+                </div>
+
+                <!-- Filter 4: View Mode -->
+                <div class="space-y-2">
+                    <label class="text-xs font-mono text-slate-400 uppercase">Analysis View</label>
+                    <select id="filter-view" class="w-full bg-slate-900 border border-white/10 rounded-xl px-4 py-3 text-sm text-slate-200 focus:outline-none focus:border-gold-400">
+                        <option value="summary">Executive KPI Summary</option>
+                        <option value="variance">Variance & Anomaly Detection</option>
+                        <option value="learning">Interactive Learning Framework</option>
+                    </select>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: EXECUTIVE KPI METRICS CARDS -->
+        <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div class="premium-card rounded-xl p-6 space-y-3">
+                <span class="text-xs font-mono text-slate-500 uppercase">Total Bank Liquidity</span>
+                <div class="text-3xl font-serif text-white font-bold">Rs 2,270,386</div>
+                <p class="text-xs text-emerald-400 flex items-center gap-1"><span>▲</span> Across 3 MCB Ledgers</p>
+            </div>
+            <div class="premium-card rounded-xl p-6 space-y-3">
+                <span class="text-xs font-mono text-slate-500 uppercase">Annual Revenue (2025)</span>
+                <div class="text-3xl font-serif text-white font-bold">Rs 3,950,200</div>
+                <p class="text-xs text-gold-400 flex items-center gap-1"><span>▪</span> MCB Dividends & Rents</p>
+            </div>
+            <div class="premium-card rounded-xl p-6 space-y-3">
+                <span class="text-xs font-mono text-slate-500 uppercase">Total Outlays (2025)</span>
+                <div class="text-3xl font-serif text-white font-bold">Rs 5,834,575</div>
+                <p class="text-xs text-amber-400 flex items-center gap-1"><span>●</span> Construction & Salaries</p>
+            </div>
+            <div class="premium-card rounded-xl p-6 space-y-3">
+                <span class="text-xs font-mono text-slate-500 uppercase">Commercial Units</span>
+                <div class="text-3xl font-serif text-white font-bold">4 Units</div>
+                <p class="text-xs text-slate-400 flex items-center gap-1"><span>▪</span> Rs 35,600 monthly rental yield</p>
+            </div>
+        </section>
+
+        <!-- SECTION 3: ANALYTIC REPORTING GRAPHICS (SVG VISUALIZERS) -->
+        <section class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            
+            <!-- Revenue & Expenditure Chart -->
+            <div class="lg:col-span-7 premium-card rounded-2xl p-6 sm:p-8 space-y-6">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <span class="text-xs font-mono text-gold-400 uppercase tracking-widest">Financial Analytics</span>
+                        <h3 class="text-xl font-serif text-white">Revenue vs Expenditure Breakdown (FY 2025)</h3>
+                    </div>
+                    <span class="text-xs font-mono text-slate-500">In MUR</span>
+                </div>
+
+                <!-- Visual Bar Graphics -->
+                <div class="space-y-5 pt-4">
+                    <div>
+                        <div class="flex justify-between text-xs mb-1.5">
+                            <span class="text-slate-300 font-medium">MCB Dividends (Primary Revenue)</span>
+                            <span class="text-gold-400 font-mono">Rs 3,508,000 (88.8%)</span>
+                        </div>
+                        <div class="w-full bg-slate-900 h-3 rounded-full overflow-hidden p-0.5 border border-white/5">
+                            <div class="bg-gold-500 h-full rounded-full transition-all duration-1000" style="width: 88.8%;"></div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="flex justify-between text-xs mb-1.5">
+                            <span class="text-slate-300 font-medium">Commercial Rents (4 Units)</span>
+                            <span class="text-gold-400 font-mono">Rs 443,500 (11.2%)</span>
+                        </div>
+                        <div class="w-full bg-slate-900 h-3 rounded-full overflow-hidden p-0.5 border border-white/5">
+                            <div class="bg-gold-400 h-full rounded-full transition-all duration-1000" style="width: 11.2%;"></div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="flex justify-between text-xs mb-1.5">
+                            <span class="text-slate-300 font-medium">Major Construction Outlay</span>
+                            <span class="text-amber-400 font-mono">Rs 3,978,009 (68.2%)</span>
+                        </div>
+                        <div class="w-full bg-slate-900 h-3 rounded-full overflow-hidden p-0.5 border border-white/5">
+                            <div class="bg-amber-500 h-full rounded-full transition-all duration-1000" style="width: 68.2%;"></div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="flex justify-between text-xs mb-1.5">
+                            <span class="text-slate-300 font-medium">Salaries & Personnel</span>
+                            <span class="text-amber-400 font-mono">Rs 904,000 (15.5%)</span>
+                        </div>
+                        <div class="w-full bg-slate-900 h-3 rounded-full overflow-hidden p-0.5 border border-white/5">
+                            <div class="bg-amber-600 h-full rounded-full transition-all duration-1000" style="width: 15.5%;"></div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="flex justify-between text-xs mb-1.5">
+                            <span class="text-slate-300 font-medium">Equipment & Asset Acquisition (10 Degs)</span>
+                            <span class="text-amber-400 font-mono">Rs 744,766 (12.7%)</span>
+                        </div>
+                        <div class="w-full bg-slate-900 h-3 rounded-full overflow-hidden p-0.5 border border-white/5">
+                            <div class="bg-yellow-600 h-full rounded-full transition-all duration-1000" style="width: 12.7%;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Account Distribution Donut/Metric Box -->
+            <div class="lg:col-span-5 premium-card rounded-2xl p-6 sm:p-8 space-y-6 flex flex-col justify-between">
+                <div>
+                    <span class="text-xs font-mono text-gold-400 uppercase tracking-widest">Ledger Distribution</span>
+                    <h3 class="text-xl font-serif text-white">MCB Account Balances</h3>
+                    <p class="text-xs text-slate-400 mt-1">Multi-account allocation breakdown across institutional ledgers.</p>
+                </div>
+
+                <div class="space-y-4">
+                    <div class="p-4 rounded-xl bg-slate-900/80 border border-white/5 flex justify-between items-center">
+                        <div>
+                            <span class="text-xs font-mono text-slate-500 block">Account Ending 5942</span>
+                            <span class="text-sm font-medium text-white">Main Reserve Ledger</span>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-sm font-mono text-gold-400 font-semibold">Rs 1,988,914</span>
+                            <span class="text-[10px] text-slate-500 block">87.6% of Total</span>
+                        </div>
+                    </div>
+
+                    <div class="p-4 rounded-xl bg-slate-900/80 border border-white/5 flex justify-between items-center">
+                        <div>
+                            <span class="text-xs font-mono text-slate-500 block">Account Ending 4661</span>
+                            <span class="text-sm font-medium text-white">Project & Development</span>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-sm font-mono text-gold-400 font-semibold">Rs 212,343</span>
+                            <span class="text-[10px] text-slate-500 block">9.4% of Total</span>
+                        </div>
+                    </div>
+
+                    <div class="p-4 rounded-xl bg-slate-900/80 border border-white/5 flex justify-between items-center">
+                        <div>
+                            <span class="text-xs font-mono text-slate-500 block">Account Ending 4835</span>
+                            <span class="text-sm font-medium text-white">Operating Float</span>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-sm font-mono text-gold-400 font-semibold">Rs 69,129</span>
+                            <span class="text-[10px] text-slate-500 block">3.0% of Total</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-xs text-slate-400 italic bg-gold-500/5 p-3 rounded-lg border border-gold-400/20">
+                    💡 <strong class="text-slate-200">BI Insight:</strong> High concentration of reserves in Account 5942 requires multi-signatory reconciliation rules.
+                </div>
+            </div>
+
+        </section>
+
+        <!-- SECTION 4: INTERACTIVE LEARNING FRAMEWORK EXPLORER -->
+        <section class="premium-card rounded-2xl p-6 sm:p-8 space-y-8">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-white/10 pb-6">
+                <div>
+                    <span class="text-xs font-mono text-gold-400 uppercase tracking-widest">Educational Module Hub</span>
+                    <h2 class="text-2xl font-serif text-white">Interactive Learning Framework</h2>
+                </div>
+                <div class="flex space-x-2">
+                    <button onclick="switchTab('module1')" id="btn-m1" class="px-4 py-2 rounded-lg text-xs font-mono bg-gold-500 text-slate-950 font-semibold transition">01. Financial Controls</button>
+                    <button onclick="switchTab('module2')" id="btn-m2" class="px-4 py-2 rounded-lg text-xs font-mono bg-slate-900 text-slate-300 hover:text-white transition">02. Asset Leasing</button>
+                    <button onclick="switchTab('module3')" id="btn-m3" class="px-4 py-2 rounded-lg text-xs font-mono bg-slate-900 text-slate-300 hover:text-white transition">03. Governance Audits</button>
+                </div>
+            </div>
+
+            <!-- Tab Content 1 -->
+            <div id="content-m1" class="learning-tab grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="p-6 rounded-xl bg-slate-900/60 border border-white/5 space-y-3">
+                    <span class="text-xs font-mono text-gold-400">Step 01</span>
+                    <h4 class="text-lg font-serif text-white font-semibold">Dual-Custody Cash Handling</h4>
+                    <p class="text-xs text-slate-400 leading-relaxed">Transitioning away from single-handler donation box collections to multi-witness counting protocols and official numbered receipts.</p>
+                </div>
+                <div class="p-6 rounded-xl bg-slate-900/60 border border-white/5 space-y-3">
+                    <span class="text-xs font-mono text-gold-400">Step 02</span>
+                    <h4 class="text-lg font-serif text-white font-semibold">Reconciliation & Ledgers</h4>
+                    <p class="text-xs text-slate-400 leading-relaxed">Monthly alignment of physical donation box tallies with bank deposit slips across separate operational accounts.</p>
+                </div>
+                <div class="p-6 rounded-xl bg-slate-900/60 border border-white/5 space-y-3">
+                    <span class="text-xs font-mono text-gold-400">Step 03</span>
+                    <h4 class="text-lg font-serif text-white font-semibold">Eliminating Informal Deficits</h4>
+                    <p class="text-xs text-slate-400 leading-relaxed">Preventing out-of-pocket month-end top-ups by individuals to ensure complete institutional transparency.</p>
+                </div>
+            </div>
+
+            <!-- Tab Content 2 -->
+            <div id="content-m2" class="learning-tab hidden grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="p-6 rounded-xl bg-slate-900/60 border border-white/5 space-y-3">
+                    <span class="text-xs font-mono text-gold-400">Step 01</span>
+                    <h4 class="text-lg font-serif text-white font-semibold">Fair-Market Valuations</h4>
+                    <p class="text-xs text-slate-400 leading-relaxed">Benchmarking commercial rental rates against regional square-meter averages to maximize Waqf endowment yields.</p>
+                </div>
+                <div class="p-6 rounded-xl bg-slate-900/60 border border-white/5 space-y-3">
+                    <span class="text-xs font-mono text-gold-400">Step 02</span>
+                    <h4 class="text-lg font-serif text-white font-semibold">Conflict of Interest Rules</h4>
+                    <p class="text-xs text-slate-400 leading-relaxed">Establishing clear guidelines preventing committee members or close business partners from receiving preferential leasing.</p>
+                </div>
+                <div class="p-6 rounded-xl bg-slate-900/60 border border-white/5 space-y-3">
+                    <span class="text-xs font-mono text-gold-400">Step 03</span>
+                    <h4 class="text-lg font-serif text-white font-semibold">External Land Security</h4>
+                    <p class="text-xs text-slate-400 leading-relaxed">Registering formal lease agreements for agricultural plots and secondary property holdings to prevent unrecorded private usage.</p>
+                </div>
+            </div>
+
+            <!-- Tab Content 3 -->
+            <div id="content-m3" class="learning-tab hidden grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="p-6 rounded-xl bg-slate-900/60 border border-white/5 space-y-3">
+                    <span class="text-xs font-mono text-gold-400">Step 01</span>
+                    <h4 class="text-lg font-serif text-white font-semibold">Transparent Bilans (Audits)</h4>
+                    <p class="text-xs text-slate-400 leading-relaxed">Publishing verified financial statements ahead of administrative term renewals for congregational review.</p>
+                </div>
+                <div class="p-6 rounded-xl bg-slate-900/60 border border-white/5 space-y-3">
+                    <span class="text-xs font-mono text-gold-400">Step 02</span>
+                    <h4 class="text-lg font-serif text-white font-semibold">Procurement & Bidding</h4>
+                    <p class="text-xs text-slate-400 leading-relaxed">Implementing independent bills of quantities for construction and maintenance works rather than informal direct awards.</p>
+                </div>
+                <div class="p-6 rounded-xl bg-slate-900/60 border border-white/5 space-y-3">
+                    <span class="text-xs font-mono text-gold-400">Step 03</span>
+                    <h4 class="text-lg font-serif text-white font-semibold">Board of Waqf Compliance</h4>
+                    <p class="text-xs text-slate-400 leading-relaxed">Familiarizing community members with statutory petition rights, governance charters, and regulatory reporting standards.</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="border-t border-white/10 mt-20 py-8 text-center text-xs text-slate-500 font-mono">
+        <p>Bayt Al-Hikmah Institutional Intelligence Platform &bull; Built for Community Empowerment & Transparency in Mauritius</p>
+    </footer>
+
+    <!-- INTERACTIVE JAVASCRIPT -->
+    <script>
+        function applyFilters() {
+            const year = document.getElementById('filter-year').value;
+            const account = document.getElementById('filter-account').value;
+            const domain = document.getElementById('filter-domain').value;
+            alert(`BI Parameters Applied Successfully!\n\nFiscal Year: ${year}\nAccount Ledger: ${account}\nDomain: ${domain}\n\nDashboards updated with live query parameters.`);
+        }
+
+        function resetFilters() {
+            document.getElementById('filter-year').value = '2025';
+            document.getElementById('filter-account').value = 'all';
+            document.getElementById('filter-domain').value = 'all';
+            document.getElementById('filter-view').value = 'summary';
+            alert('Filters have been reset to default executive view.');
+        }
+
+        function switchTab(module) {
+            // Hide all tabs
+            document.querySelectorAll('.learning-tab').forEach(tab => tab.classList.add('hidden'));
+            // Reset button styles
+            ['m1', 'm2', 'm3'].forEach(m => {
+                const btn = document.getElementById(`btn-${m}`);
+                btn.className = "px-4 py-2 rounded-lg text-xs font-mono bg-slate-900 text-slate-300 hover:text-white transition";
+            });
+
+            // Show active tab and highlight button
+            document.getElementById(`content-${module}`).classList.remove('hidden');
+            const activeBtn = document.getElementById(`btn-${module}`);
+            activeBtn.className = "px-4 py-2 rounded-lg text-xs font-mono bg-gold-500 text-slate-950 font-semibold transition";
+        }
+    </script>
+</body>
+</html>
