@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bayt Al-Hikmah | BI Analytics & Monthly Cash Flow Reconciliation</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        gold: {
+                            400: '#d4af37',
+                            500: '#c5a059',
+                            600: '#aa823d',
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['Playfair Display', 'Georgia', 'serif'],
+                        arabic: ['Amiri', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #030712; color: #f8fafc; }
+        .premium-card { background: linear-gradient(145deg, rgba(15, 23, 42, 0.9), rgba(3, 7, 18, 0.95)); border: 1px solid rgba(212, 175, 55, 0.15); box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5); }
+        .premium-card:hover { border-color: rgba(212, 175, 55, 0.4); }
+        table th { background-color: rgba(15, 23, 42, 0.95); }
+        table tr:nth-child(even) { background-color: rgba(30, 41, 59, 0.2); }
+        table tr:hover { background-color: rgba(30, 41, 59, 0.4); }
+    </style>
+</head>
+<body class="min-h-screen antialiased selection:bg-gold-500 selection:text-slate-950">
+
+    <!-- TOP NAVIGATION -->
+    <header class="sticky top-0 z-50 backdrop-blur-md bg-slate-950/80 border-b border-white/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-lg bg-gold-500/10 border border-gold-400/30 flex items-center justify-center text-gold-400 font-serif font-bold text-lg">
+                    ب
+                </div>
+                <div>
+                    <span class="text-xs font-mono text-gold-400 tracking-widest uppercase block">Monthly Flow & Reconciliation Hub</span>
+                    <h1 class="text-lg font-serif text-white font-semibold">Bayt Al-Hikmah Analytics</h1>
+                </div>
+            </div>
+            <div class="flex items-center space-x-4 text-xs font-mono text-slate-400">
+                <span class="hidden sm:inline">Status: <span class="text-emerald-400 font-semibold">Live Recon Feed</span></span>
+                <span class="px-3 py-1.5 rounded-full bg-gold-500/10 border border-gold-400/20 text-gold-400">BI Engine v2.5</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTAINER -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-10">
+
+        <!-- SECTION 1: PARAMETERS & BI FILTER BAR -->
+        <section class="premium-card rounded-2xl p-6 sm:p-8 space-y-6">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-white/10 pb-6">
+                <div>
+                    <span class="text-xs font-mono text-gold-400 uppercase tracking-widest">Interactive Control Panel</span>
+                    <h2 class="text-2xl font-serif text-white">Analytic Parameters & Monthly Filters</h2>
+                </div>
+                <div class="flex items-center space-x-3 text-xs">
+                    <button onclick="resetFilters()" class="px-4 py-2 rounded-lg bg-slate-900 border border-white/10 text-slate-300 hover:text-white transition">Reset Filters</button>
+                    <button onclick="applyFilters()" class="px-4 py-2 rounded-lg bg-gold-500 text-slate-950 font-semibold hover:bg-gold-400 transition">Apply Parameters</button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Filter 1: Fiscal Year -->
+                <div class="space-y-2">
+                    <label class="text-xs font-mono text-slate-400 uppercase">Fiscal Year Parameter</label>
+                    <select id="filter-year" class="w-full bg-slate-900 border border-white/10 rounded-xl px-4 py-3 text-sm text-slate-200 focus:outline-none focus:border-gold-400">
+                        <option value="2025">FY 2025 (Full Audit)</option>
+                        <option value="2026">FY 2026 (YTD)</option>
+                        <option value="all">All Historical Records</option>
+                    </select>
+                </div>
+
+                <!-- Filter 2: Payment Channel -->
+                <div class="space-y-2">
+                    <label class="text-xs font-mono text-slate-400 uppercase">Payment Channel Filter</label>
+                    <select id="filter-channel" class="w-full bg-slate-900 border border-white/10 rounded-xl px-4 py-3 text-sm text-slate-200 focus:outline-none focus:border-gold-400">
+                        <option value="all">All Channels Combined (Cash + E-Tran)</option>
+                        <option value="electronic">Electronic Banking Layer (MCB Ledgers)</option>
+                        <option value="cash">Physical Cash Layer (Boxes & Rentals)</option>
+                    </select>
+                </div>
+
+                <!-- Filter 3: Fixed Operational Item -->
+                <div class="space-y-2">
+                    <label class="text-xs font-mono text-slate-400 uppercase">Fixed Operational Item</label>
+                    <select id="filter-item" class="w-full bg-slate-900 border border-white/10 rounded-xl px-4 py-3 text-sm text-slate-200 focus:outline-none focus:border-gold-400">
+                        <option value="all">All Items</option>
+                        <option value="salaries">Staff Salaries (~Rs 75.3K / mo)</option>
+                        <option value="transport">Madrassah Transport & Boxes</option>
+                        <option value="rents">Commercial Rents (~Rs 35.6K / mo)</option>
+                    </select>
+                </div>
+
+                <!-- Filter 4: View Mode -->
+                <div class="space-y-2">
+                    <label class="text-xs font-mono text-slate-400 uppercase">Analysis View</label>
+                    <select id="filter-view" class="w-full bg-slate-900 border border-white/10 rounded-xl px-4 py-3 text-sm text-slate-200 focus:outline-none focus:border-gold-400">
+                        <option value="reconciliation">Monthly Recon & Ledger Matrix</option>
+                        <option value="summary">Executive KPI Summary</option>
+                        <option value="learning">Interactive Learning Framework</option>
+                    </select>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: EXECUTIVE KPI METRICS CARDS -->
+        <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div class="premium-card rounded-xl p-6 space-y-3">
+                <span class="text-xs font-mono text-slate-500 uppercase">Total Bank Liquidity</span>
+                <div class="text-3xl font-serif text-white font-bold">Rs 2,270,386</div>
+                <p class="text-xs text-emerald-400 flex items-center gap-1"><span>▲</span> Across 3 MCB Ledgers</p>
+            </div>
+            <div class="premium-card rounded-xl p-6 space-y-3">
+                <span class="text-xs font-mono text-slate-500 uppercase">Monthly Salary Outflow</span>
+                <div class="text-3xl font-serif text-white font-bold">Rs 75,333</div>
+                <p class="text-xs text-gold-400 flex items-center gap-1"><span>▪</span> Fixed Annual: Rs 904,000</p>
+            </div>
+            <div class="premium-card rounded-xl p-6 space-y-3">
+                <span class="text-xs font-mono text-slate-500 uppercase">Madrassah Transport</span>
+                <div class="text-3xl font-serif text-white font-bold">Rs 169,000</div>
+                <p class="text-xs text-amber-400 flex items-center gap-1"><span>●</span> Offset by Cash Box Loop</p>
+            </div>
+            <div class="premium-card rounded-xl p-6 space-y-3">
+                <span class="text-xs font-mono text-slate-500 uppercase">Commercial Rent Inflow</span>
+                <div class="text-3xl font-serif text-white font-bold">Rs 35,600</div>
+                <p class="text-xs text-slate-400 flex items-center gap-1"><span>▪</span> Monthly across 3 tenants</p>
+            </div>
+        </section>
+
+        <!-- SECTION 3: MONTHLY RECONCILIATION & MONEY FLOW MATRIX -->
+        <section class="premium-card rounded-2xl p-6 sm:p-8 space-y-6">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-white/10 pb-6">
+                <div>
+                    <span class="text-xs font-mono text-gold-400 uppercase tracking-widest">Ledger & Cash Flow Analysis</span>
+                    <h2 class="text-2xl font-serif text-white">Monthly Fixed Item Reconciliation Matrix</h2>
+                    <p class="text-xs text-slate-400 mt-1">Mapping annual submissions to monthly fixed flows across banking and physical channels.</p>
+                </div>
+                <div class="flex space-x-2">
+                    <button onclick="switchReconTab('table')" id="btn-recon-table" class="px-4 py-2 rounded-lg text-xs font-mono bg-gold-500 text-slate-950 font-semibold transition">Flow Matrix</button>
+                    <button onclick="switchReconTab('transport')" id="btn-recon-transport" class="px-4 py-2 rounded-lg text-xs font-mono bg-slate-900 text-slate-300 hover:text-white transition">Transport & Cash Loop</button>
+                </div>
+            </div>
+
+            <!-- TAB 1: FLOW MATRIX TABLE -->
+            <div id="recon-content-table" class="recon-tab overflow-x-auto">
+                <table class="w-full text-left text-xs">
+                    <thead>
+                        <tr class="border-b border-white/10 text-gold-400 font-mono uppercase">
+                            <th class="p-4">Category / Item</th>
+                            <th class="p-4">Annual Total (MUR)</th>
+                            <th class="p-4">Derived Monthly</th>
+                            <th class="p-4">Primary Channel</th>
+                            <th class="p-4">Reconciliation & Statement Link</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-white/5 text-slate-300">
+                        <tr>
+                            <td class="p-4 font-medium text-white">Staff Salaries</td>
+                            <td class="p-4 font-mono">Rs 904,000.00</td>
+                            <td class="p-4 font-mono text-gold-400">Rs 75,333.33</td>
+                            <td class="p-4">Cheque / E-Tran</td>
+                            <td class="p-4 text-slate-400">12 monthly disbursements matching payroll records across main operational accounts.</td>
+                        </tr>
+                        <tr>
+                            <td class="p-4 font-medium text-white">Madrassah Transport</td>
+                            <td class="p-4 font-mono">Rs 169,000.00</td>
+                            <td class="p-4 font-mono text-gold-400">Rs 16,900.00</td>
+                            <td class="p-4">Cash / Cheque</td>
+                            <td class="p-4 text-slate-400">Paid to Mr. Reaz; active school months supplemented by cash box collections.</td>
+                        </tr>
+                        <tr>
+                            <td class="p-4 font-medium text-white">Commercial Rent</td>
+                            <td class="p-4 font-mono">Rs 443,500.00</td>
+                            <td class="p-4 font-mono text-gold-400">Rs 36,958.33</td>
+                            <td class="p-4">Bank Transfer / Cheque</td>
+                            <td class="p-4 text-slate-400">Sultan Retail, Food Palace, Quincaillerie Raza credited to account ending 5942.</td>
+                        </tr>
+                        <tr>
+                            <td class="p-4 font-medium text-white">C.E.B. (Electricity)</td>
+                            <td class="p-4 font-mono">Rs 57,364.00</td>
+                            <td class="p-4 font-mono text-gold-400">Rs 4,780.33</td>
+                            <td class="p-4">Direct Debit</td>
+                            <td class="p-4 text-slate-400">Automatic monthly utility debits across mosque meters.</td>
+                        </tr>
+                        <tr>
+                            <td class="p-4 font-medium text-white">MCB Dividends</td>
+                            <td class="p-4 font-mono">Rs 3,508,822.76</td>
+                            <td class="p-4 font-mono text-gold-400">Episodic (Bulk Dec)</td>
+                            <td class="p-4">Electronic Credit</td>
+                            <td class="p-4 text-slate-400">Major bulk dividend inflows credited directly to main reserve ledgers.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- TAB 2: TRANSPORT & CASH LOOP DEEP DIVE -->
+            <div id="recon-content-transport" class="recon-tab hidden grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="p-6 rounded-xl bg-slate-900/60 border border-white/5 space-y-3">
+                    <span class="text-xs font-mono text-gold-400">Loop Element 01</span>
+                    <h4 class="text-lg font-serif text-white font-semibold">The Cardboard Box Mechanism</h4>
+                    <p class="text-xs text-slate-400 leading-relaxed">Physical cash dropped into the unkeyed Madrassah box near the gate is collected daily by the elderly handler to fund student transport.</p>
+                </div>
+                <div class="p-6 rounded-xl bg-slate-900/60 border border-white/5 space-y-3">
+                    <span class="text-xs font-mono text-gold-400">Loop Element 02</span>
+                    <h4 class="text-lg font-serif text-white font-semibold">Vacation & Surplus Anomaly</h4>
+                    <p class="text-xs text-slate-400 leading-relaxed">The box remains active during school holidays when no transport operates, creating unrecorded cash surpluses managed outside formal ledgers.</p>
+                </div>
+                <div class="p-6 rounded-xl bg-slate-900/60 border border-white/5 space-y-3">
+                    <span class="text-xs font-mono text-gold-400">Loop Element 03</span>
+                    <h4 class="text-lg font-serif text-white font-semibold">Out-of-Pocket Top-Ups</h4>
+                    <p class="text-xs text-slate-400 leading-relaxed">When monthly box collections fall short of the Rs 16,900 transport fee, the handler personally covers the difference, blurring institutional transparency.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 4: INTERACTIVE LEARNING FRAMEWORK EXPLORER -->
+        <section class="premium-card rounded-2xl p-6 sm:p-8 space-y-8">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-white/10 pb-6">
+                <div>
+                    <span class="text-xs font-mono text-gold-400 uppercase tracking-widest">Educational Module Hub</span>
+                    <h2 class="text-2xl font-serif text-white">Interactive Learning Framework</h2>
+                </div>
+                <div class="flex space-x-2">
+                    <button onclick="switchTab('module1')" id="btn-m1" class="px-4 py-2 rounded-lg text-xs font-mono bg-gold-500 text-slate-950 font-semibold transition">01. Cash Controls</button>
+                    <button onclick="switchTab('module2')" id="btn-m2" class="px-4 py-2 rounded-lg text-xs font-mono bg-slate-900 text-slate-300 hover:text-white transition">02. Asset Leasing</button>
+                    <button onclick="switchTab('module3')" id="btn-m3" class="px-4 py-2 rounded-lg text-xs font-mono bg-slate-900 text-slate-300 hover:text-white transition">03. Governance Audits</button>
+                </div>
+            </div>
+
+            <!-- Tab Content 1 -->
+            <div id="content-m1" class="learning-tab grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="p-6 rounded-xl bg-slate-900/60 border border-white/5 space-y-3">
+                    <span class="text-xs font-mono text-gold-400">Step 01</span>
+                    <h4 class="text-lg font-serif text-white font-semibold">Dual-Custody Cash Handling</h4>
+                    <p class="text-xs text-slate-400 leading-relaxed">Transitioning away from single-handler box collections to multi-witness counting protocols and official numbered receipts.</p>
+                </div>
+                <div class="p-6 rounded-xl bg-slate-900/60 border border-white/5 space-y-3">
+                    <span class="text-xs font-mono text-gold-400">Step 02</span>
+                    <h4 class="text-lg font-serif text-white font-semibold">Reconciliation & Ledgers</h4>
+                    <p class="text-xs text-slate-400 leading-relaxed">Monthly alignment of physical donation box tallies with bank deposit slips across separate operational accounts.</p>
+                </div>
+                <div class="p-6 rounded-xl bg-slate-900/60 border border-white/5 space-y-3">
+                    <span class="text-xs font-mono text-gold-400">Step 03</span>
+                    <h4 class="text-lg font-serif text-white font-semibold">Eliminating Informal Deficits</h4>
+                    <p class="text-xs text-slate-400 leading-relaxed">Preventing out-of-pocket month-end top-ups by individuals to ensure complete institutional transparency.</p>
+                </div>
+            </div>
+
+            <!-- Tab Content 2 -->
+            <div id="content-m2" class="learning-tab hidden grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="p-6 rounded-xl bg-slate-900/60 border border-white/5 space-y-3">
+                    <span class="text-xs font-mono text-gold-400">Step 01</span>
+                    <h4 class="text-lg font-serif text-white font-semibold">Fair-Market Valuations</h4>
+                    <p class="text-xs text-slate-400 leading-relaxed">Benchmarking commercial rental rates against regional square-meter averages to maximize Waqf endowment yields.</p>
+                </div>
+                <div class="p-6 rounded-xl bg-slate-900/60 border border-white/5 space-y-3">
+                    <span class="text-xs font-mono text-gold-400">Step 02</span>
+                    <h4 class="text-lg font-serif text-white font-semibold">Conflict of Interest Rules</h4>
+                    <p class="text-xs text-slate-400 leading-relaxed">Establishing clear guidelines preventing committee members or close business partners from receiving preferential leasing.</p>
+                </div>
+                <div class="p-6 rounded-xl bg-slate-900/60 border border-white/5 space-y-3">
+                    <span class="text-xs font-mono text-gold-400">Step 03</span>
+                    <h4 class="text-lg font-serif text-white font-semibold">External Land Security</h4>
+                    <p class="text-xs text-slate-400 leading-relaxed">Registering formal lease agreements for agricultural plots and secondary property holdings to prevent unrecorded private usage.</p>
+                </div>
+            </div>
+
+            <!-- Tab Content 3 -->
+            <div id="content-m3" class="learning-tab hidden grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="p-6 rounded-xl bg-slate-900/60 border border-white/5 space-y-3">
+                    <span class="text-xs font-mono text-gold-400">Step 01</span>
+                    <h4 class="text-lg font-serif text-white font-semibold">Transparent Bilans (Audits)</h4>
+                    <p class="text-xs text-slate-400 leading-relaxed">Publishing verified financial statements ahead of administrative term renewals for congregational review.</p>
+                </div>
+                <div class="p-6 rounded-xl bg-slate-900/60 border border-white/5 space-y-3">
+                    <span class="text-xs font-mono text-gold-400">Step 02</span>
+                    <h4 class="text-lg font-serif text-white font-semibold">Procurement & Bidding</h4>
+                    <p class="text-xs text-slate-400 leading-relaxed">Implementing independent bills of quantities for construction and maintenance works rather than informal direct awards.</p>
+                </div>
+                <div class="p-6 rounded-xl bg-slate-900/60 border border-white/5 space-y-3">
+                    <span class="text-xs font-mono text-gold-400">Step 03</span>
+                    <h4 class="text-lg font-serif text-white font-semibold">Board of Waqf Compliance</h4>
+                    <p class="text-xs text-slate-400 leading-relaxed">Familiarizing community members with statutory petition rights, governance charters, and regulatory reporting standards.</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="border-t border-white/10 mt-20 py-8 text-center text-xs text-slate-500 font-mono">
+        <p>Bayt Al-Hikmah Institutional Intelligence Platform &bull; Built for Community Empowerment & Transparency in Mauritius</p>
+    </footer>
+
+    <!-- INTERACTIVE JAVASCRIPT -->
+    <script>
+        function applyFilters() {
+            const year = document.getElementById('filter-year').value;
+            const channel = document.getElementById('filter-channel').value;
+            const item = document.getElementById('filter-item').value;
+            alert(`BI Parameters Applied Successfully!\n\nFiscal Year: ${year}\nPayment Channel: ${channel}\nOperational Item: ${item}\n\nDashboards updated with live reconciliation parameters.`);
+        }
+
+        function resetFilters() {
+            document.getElementById('filter-year').value = '2025';
+            document.getElementById('filter-channel').value = 'all';
+            document.getElementById('filter-item').value = 'all';
+            document.getElementById('filter-view').value = 'reconciliation';
+            alert('Filters have been reset to default reconciliation view.');
+        }
+
+        function switchReconTab(tabName) {
+            document.querySelectorAll('.recon-tab').forEach(tab => tab.classList.add('hidden'));
+            document.getElementById('btn-recon-table').className = "px-4 py-2 rounded-lg text-xs font-mono bg-slate-900 text-slate-300 hover:text-white transition";
+            document.getElementById('btn-recon-transport').className = "px-4 py-2 rounded-lg text-xs font-mono bg-slate-900 text-slate-300 hover:text-white transition";
+
+            document.getElementById(`recon-content-${tabName}`).classList.remove('hidden');
+            document.getElementById(`btn-recon-${tabName}`).className = "px-4 py-2 rounded-lg text-xs font-mono bg-gold-500 text-slate-950 font-semibold transition";
+        }
+
+        function switchTab(module) {
+            document.querySelectorAll('.learning-tab').forEach(tab => tab.classList.add('hidden'));
+            ['m1', 'm2', 'm3'].forEach(m => {
+                const btn = document.getElementById(`btn-${m}`);
+                btn.className = "px-4 py-2 rounded-lg text-xs font-mono bg-slate-900 text-slate-300 hover:text-white transition";
+            });
+
+            document.getElementById(`content-${module}`).classList.remove('hidden');
+            const activeBtn = document.getElementById(`btn-${module}`);
+            activeBtn.className = "px-4 py-2 rounded-lg text-xs font-mono bg-gold-500 text-slate-950 font-semibold transition";
+        }
+    </script>
+</body>
+</html>
